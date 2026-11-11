@@ -1,0 +1,21 @@
+{
+  "name": "crossub-mobile-landlord",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CROSSUB owner app — Expo client for property owners. Same toolchain as the inspector app.",
+  "scripts": {
+    "preinstall": "npx -y only-allow pnpm",
+    "dev:native": "pnpm --filter @crossub/owner-native start",
+    "ios": "pnpm --filter @crossub/owner-native ios",
+    "android": "pnpm --filter @crossub/owner-native android",
+    "web": "pnpm --filter @crossub/owner-native web",
+    "typecheck": "pnpm --filter @crossub/owner-native typecheck"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9",
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm"
+  }
+}

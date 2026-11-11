@@ -1,0 +1,14 @@
+node_modules/
+.pnpm-store/
+**/node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+.expo/
+web-build/
+ios/
+android/
+*.log
