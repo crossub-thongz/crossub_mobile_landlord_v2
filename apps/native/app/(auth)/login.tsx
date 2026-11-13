@@ -7,7 +7,7 @@ import { colors } from '@/src/theme';
 
 export default function LoginScreen() {
   const { login, status } = useAuth();
-  const [email, setEmail] = useState('owner@example.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -39,13 +39,22 @@ export default function LoginScreen() {
         <Text style={styles.kicker}>OWNER</Text>
         <Text style={styles.title}>Portfolio, approvals, statements.</Text>
         <Text style={styles.sub}>This is the owner account. Tenant and agent sign-in stay in their own apps.</Text>
-        <TextInput autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} style={styles.input} />
+        <TextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          placeholder="Email"
+          placeholderTextColor="#8b9b90"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+        />
         <TextInput secureTextEntry value={password} onChangeText={setPassword} placeholder="Password" placeholderTextColor="#8b9b90" style={styles.input} />
         {error ? <Text style={styles.error}>{error}</Text> : null}
         <Pressable accessibilityRole="button" onPress={onSubmit} style={styles.button}>
           {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign in</Text>}
         </Pressable>
-        <Text style={styles.hint}>Demo sign-in accepts any password. The live owner website is still the Next.js landlord portal.</Text>
+        <Text style={styles.hint}>Use the same owner login as the CROSSUB owner website.</Text>
       </View>
     </SafeAreaView>
   );

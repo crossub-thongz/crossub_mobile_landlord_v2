@@ -2,13 +2,13 @@
 
 Owner app for CROSSUB. Expo client, same toolchain and app icon as the inspector app. Bundle id: `com.crossub.landlord`.
 
-This repository is the native shell. The current owner website remains `crossub_mobile_landlord_app` (Next.js, port 3005) and already talks to the API. This app does not replace that portal.
+This repository is the native owner app. The owner website remains `crossub_mobile_landlord_app` (Next.js, port 3005). Both talk to the same `/api/v1` landlord contract. This app does not replace that portal.
 
-The first product pass is the tenant app in `crossub_mobile_tenant_v2`. Owner screens here are a local preview of the decisions an owner actually takes: portfolio, approvals, and statement totals. They do not show another person's phone number, login, or a tenant ledger line that the owner is not meant to see.
+Portfolio, approvals, and statement totals come from the signed-in owner's account. The screens do not show a tenant phone number, login, or a tenant ledger line.
 
 ```bash
 pnpm install
 pnpm dev:native
 ```
 
-Sign in with any email and password.
+Sign in with an owner account (`LANDLORD`).

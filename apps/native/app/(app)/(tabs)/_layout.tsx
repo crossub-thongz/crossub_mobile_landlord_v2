@@ -11,7 +11,7 @@ function tint(color: unknown) {
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
-  const pending = usePortfolio().approvals.filter((item) => item.decision === 'Pending').length;
+  const pending = usePortfolio().approvals.filter((item) => item.status === 'PENDING').length;
 
   return (
     <Tabs

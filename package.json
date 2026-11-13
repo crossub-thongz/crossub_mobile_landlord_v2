@@ -5,6 +5,7 @@
   "description": "CROSSUB owner app — Expo client for property owners. Same toolchain as the inspector app.",
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
+    "postinstall": "pnpm --filter @crossub-thongz/api-contract build",
     "dev:native": "pnpm --filter @crossub/owner-native start",
     "ios": "pnpm --filter @crossub/owner-native ios",
     "android": "pnpm --filter @crossub/owner-native android",

@@ -1,32 +1,38 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { usePortfolio } from '@/src/portfolio';
+import { money, usePortfolio } from '@/src/portfolio';
 import { colors } from '@/src/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const pending = usePortfolio().approvals.filter((item) => item.decision === 'Pending').length;
+  const portfolio = usePortfolio();
+  const pending = portfolio.approvals.filter((item) => item.status === 'PENDING').length;
+  const addresses = portfolio.properties.map((item) => item.address).filter(Boolean);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <Text style={styles.kicker}>PORTFOLIO</Text>
         <Text style={styles.h1}>Good morning</Text>
+        {portfolio.status === 'loading' || portfolio.status === 'idle' ? <ActivityIndicator color={colors.green} /> : null}
+        {portfolio.error ? <Text style={styles.error}>{portfolio.error}</Text> : null}
         <View style={styles.card}>
           <Text style={styles.muted}>Properties</Text>
-          <Text style={styles.amount}>2</Text>
-          <Text style={styles.body}>1205 / 88 Berry Street · 4 / 19 Walker Street</Text>
+          <Text style={styles.amount}>{portfolio.status === 'ready' ? portfolio.properties.length : '—'}</Text>
+          <Text style={styles.body}>
+            {addresses.length > 0 ? addresses.join(' · ') : 'Properties you receive owner payouts for appear here.'}
+          </Text>
         </View>
         <View style={styles.row}>
           <View style={styles.tile}>
             <Text style={styles.muted}>Collected this month</Text>
-            <Text style={styles.tileValue}>$9,600</Text>
+            <Text style={styles.tileValue}>{portfolio.status === 'ready' ? money(portfolio.collectedThisMonth) : '—'}</Text>
           </View>
           <View style={styles.tile}>
             <Text style={styles.muted}>Waiting on you</Text>
-            <Text style={styles.tileValue}>{pending}</Text>
+            <Text style={styles.tileValue}>{portfolio.status === 'ready' ? pending : '—'}</Text>
           </View>
         </View>
         <Pressable accessibilityRole="button" style={styles.card} onPress={() => router.push('/approvals')}>
@@ -34,7 +40,9 @@ export default function HomeScreen() {
           <Text style={styles.body}>Maintenance quotes and rent reviews. Approving here does not pay a contractor.</Text>
         </Pressable>
         <View style={styles.notice}>
-          <Text style={styles.noticeText}>Owner totals come from Crossub Accounting. This preview does not show tenant contact details or another owner’s properties.</Text>
+          <Text style={styles.noticeText}>
+            Owner totals come from Crossub Accounting. Tenant contact details are not shown on this screen.
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -56,4 +64,5 @@ const styles = StyleSheet.create({
   tileValue: { color: colors.ink, fontSize: 18, fontWeight: '700' },
   notice: { backgroundColor: colors.soft, borderRadius: 12, padding: 12 },
   noticeText: { color: '#496653', fontSize: 12, lineHeight: 18 },
+  error: { color: '#9b3b3b' },
 });

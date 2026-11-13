@@ -35,11 +35,11 @@ function Gate() {
 
 export default function RootLayout() {
   return (
-    <PortfolioProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <PortfolioProvider>
         <Gate />
-      </AuthProvider>
-    </PortfolioProvider>
+      </PortfolioProvider>
+    </AuthProvider>
   );
 }
 

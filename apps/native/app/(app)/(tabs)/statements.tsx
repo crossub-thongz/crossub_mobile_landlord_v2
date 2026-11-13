@@ -1,29 +1,34 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { money, monthLabel, usePortfolio } from '@/src/portfolio';
 import { colors } from '@/src/theme';
 
-const MONTHS = [
-  ['October 2026', 'Rent collected $4,800', 'Fees $420', 'Owner payment $4,380'],
-  ['September 2026', 'Rent collected $4,800', 'Fees $420', 'Owner payment $4,380'],
-];
-
 export default function StatementsScreen() {
+  const { statements, status, error } = usePortfolio();
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <Text style={styles.kicker}>ACCOUNTING</Text>
         <Text style={styles.h1}>Statements</Text>
-        {MONTHS.map(([month, rent, fees, paid]) => (
-          <View key={month} style={styles.card}>
-            <Text style={styles.title}>{month}</Text>
-            <Text style={styles.body}>{rent}</Text>
-            <Text style={styles.body}>{fees}</Text>
-            <Text style={styles.body}>{paid}</Text>
+        {status === 'loading' ? <ActivityIndicator color={colors.green} /> : null}
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        {status === 'ready' && statements.length === 0 ? <Text style={styles.body}>No owner statements yet.</Text> : null}
+        {statements.map((item) => (
+          <View key={item.id} style={styles.card}>
+            <Text style={styles.title}>{monthLabel(item.month)}</Text>
+            <Text style={styles.body}>{item.propertyAddress}</Text>
+            <Text style={styles.body}>Rent collected {money(item.rentReceived)}</Text>
+            <Text style={styles.body}>Agent fee {money(item.agentFee)}</Text>
+            <Text style={styles.body}>Crossub fee {money(item.crossubFee)}</Text>
+            <Text style={styles.body}>Owner payment {money(item.netToLandlord)}</Text>
           </View>
         ))}
         <View style={styles.notice}>
-          <Text style={styles.noticeText}>Figures are owner-statement totals. Tenant arrears screens and receipt images belong in the tenant app, and only when Crossub Accounting holds them.</Text>
+          <Text style={styles.noticeText}>
+            Figures are monthly owner-statement totals from Crossub Accounting. Tenant contact details are not shown here.
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -40,4 +45,5 @@ const styles = StyleSheet.create({
   body: { color: colors.ink, fontSize: 14 },
   notice: { backgroundColor: colors.soft, borderRadius: 12, padding: 12 },
   noticeText: { color: '#496653', fontSize: 12, lineHeight: 18 },
+  error: { color: '#9b3b3b' },
 });
